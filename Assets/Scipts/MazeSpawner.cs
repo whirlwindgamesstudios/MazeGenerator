@@ -11,7 +11,7 @@ public class MazeSpawner : MonoBehaviour
     public GameObject cellPrefab;
     public  int sizeMaze;
     public CellScript[,] cellScripts;
-
+    public int NumberOfOutputs=0;
     private int xCount;
     private int xWidth;
     private int yHeight;
@@ -21,6 +21,37 @@ public class MazeSpawner : MonoBehaviour
         
     }
 
+    private void AddOutputs(CellScript[,] Cells)//Добавляем выходы
+    {
+        for (int Count = 0; Count < NumberOfOutputs; ++Count)
+        {
+            int RandomPoint = Random.Range(0, 4);
+            switch (RandomPoint)
+            {
+                case 0://Выход слева
+                    Destroy(Cells[0, Random.Range(0, sizeMaze - 1)].WallLeft);
+                    break;
+                
+                case 1://Выход справа
+                    Destroy(Cells[sizeMaze-1, Random.Range(0, sizeMaze - 1)].WallRight);
+                    break;
+                
+                case 2://Выход сверху
+                    Destroy(Cells[Random.Range(0, sizeMaze - 1),sizeMaze-1].WallTop);
+                    break;
+                
+                case 3://Выход снизу
+                    Destroy(Cells[Random.Range(0, sizeMaze - 1),0].WallBottom);
+                    break;
+                
+                default:
+                    Destroy(Cells[0, Random.Range(0, sizeMaze - 1)].WallLeft);
+                    break;
+            }
+           
+        }
+    }
+    
     public void SetValidAlgorithm(int value)
     {
         switch (value)
@@ -88,6 +119,8 @@ public class MazeSpawner : MonoBehaviour
             xWidth -= 1;//Убираем координату для последней клетки.
         }
 
+        AddOutputs(cellScripts);//Добавляем выходы
+
         var current = cellScripts[0, 0];//Устанавливаем начальную клетку
         current.Visited = true;//Помечаем ее как "Visited"
 
@@ -106,7 +139,9 @@ public class MazeSpawner : MonoBehaviour
             cellScripts[x, y].y = y;
             cellScripts[x, y].x = x;
         }
-
+        
+        AddOutputs(cellScripts);//Добавляем выходы
+        
         var current = cellScripts[0, 0];//Устанавливаем начальную клетку
         current.Visited = true;//Помечаем ее как "Visited"
 
