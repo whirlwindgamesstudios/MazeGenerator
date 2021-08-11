@@ -10,6 +10,7 @@ public class OutputSliderScript : MonoBehaviour
     [SerializeField] private MazeSpawner MazeSpawner=null;
     void Start()
     {
+        MazeSpawner.NumberOfOutputs = 0;
         outputSlider.onValueChanged.AddListener((value)=>
             outputSliderText.text=value.ToString("0"));
         

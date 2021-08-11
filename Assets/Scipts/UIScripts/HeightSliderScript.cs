@@ -11,6 +11,7 @@ public class HeightSliderScript : MonoBehaviour
     [SerializeField] private MazeSpawner MazeSpawner=null;
     void Start()
     {
+        MazeSpawner.sizeMaze = 10;
         heightSlider.onValueChanged.AddListener((value)=>
             heightSliderText.text=value.ToString("0")+"x"+value.ToString());
         

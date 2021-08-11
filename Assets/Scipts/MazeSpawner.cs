@@ -9,7 +9,7 @@ enum ValidAlgorithm
 public class MazeSpawner : MonoBehaviour
 {
     public GameObject cellPrefab;
-    public  int sizeMaze;
+    public  int sizeMaze=10;
     public CellScript[,] cellScripts;
     public int NumberOfOutputs=0;
     private int xCount;
@@ -23,32 +23,35 @@ public class MazeSpawner : MonoBehaviour
 
     private void AddOutputs(CellScript[,] Cells)//Добавляем выходы
     {
-        for (int Count = 0; Count < NumberOfOutputs; ++Count)
+        if(NumberOfOutputs!=0)
         {
-            int RandomPoint = Random.Range(0, 4);
-            switch (RandomPoint)
+            for (int Count = 0; Count < NumberOfOutputs; ++Count)
             {
-                case 0://Выход слева
-                    Destroy(Cells[0, Random.Range(0, sizeMaze - 1)].WallLeft);
-                    break;
-                
-                case 1://Выход справа
-                    Destroy(Cells[sizeMaze-1, Random.Range(0, sizeMaze - 1)].WallRight);
-                    break;
-                
-                case 2://Выход сверху
-                    Destroy(Cells[Random.Range(0, sizeMaze - 1),sizeMaze-1].WallTop);
-                    break;
-                
-                case 3://Выход снизу
-                    Destroy(Cells[Random.Range(0, sizeMaze - 1),0].WallBottom);
-                    break;
-                
-                default:
-                    Destroy(Cells[0, Random.Range(0, sizeMaze - 1)].WallLeft);
-                    break;
+                int RandomPoint = Random.Range(0, 4);
+                switch (RandomPoint)
+                {
+                    case 0: //Выход слева
+                        Destroy(Cells[0, Random.Range(0, sizeMaze - 1)].WallLeft);
+                        break;
+
+                    case 1: //Выход справа
+                        Destroy(Cells[sizeMaze - 1, Random.Range(0, sizeMaze - 1)].WallRight);
+                        break;
+
+                    case 2: //Выход сверху
+                        Destroy(Cells[Random.Range(0, sizeMaze - 1), sizeMaze - 1].WallTop);
+                        break;
+
+                    case 3: //Выход снизу
+                        Destroy(Cells[Random.Range(0, sizeMaze - 1), 0].WallBottom);
+                        break;
+
+                    default:
+                        Destroy(Cells[0, Random.Range(0, sizeMaze - 1)].WallLeft);
+                        break;
+                }
+
             }
-           
         }
     }
     
@@ -67,13 +70,26 @@ public class MazeSpawner : MonoBehaviour
                 break;
         }
     }
-    
+
+    public void StartClear()
+    {
+        GameObject [] AllCell;
+        AllCell = GameObject.FindGameObjectsWithTag("Cell");
+        foreach (var cellElement in AllCell)
+        {
+            Destroy(cellElement);
+        }
+    }
+
     public void GenerateMaze()
     {
+        StartClear();
         xWidth = sizeMaze; //xWidth нужен для того что бы можно было регулировать постройку по координатам для треугольника,не меняя текущих размеров.
         yHeight = sizeMaze;//Аналогично
         xCount = 0;
-        transform.position.Set(100f, 100f, -10f);//Тут я пытался переместить камеру и настроить ее так что бы она смотрела на лабиринт без лишнего фона,я хз почему не работает.
+        transform.position=new Vector3(sizeMaze/2, sizeMaze/2, -10f);//Тут я пытался переместить камеру и настроить ее так что бы она смотрела на лабиринт без лишнего фона,я хз почему не работает.
+        Camera MainCamera = gameObject.GetComponent<Camera>();
+        MainCamera.orthographicSize = sizeMaze / 2;
         switch (algorithm)//Ищем нужный алгоритм 
         {
             case ValidAlgorithm.Rectangular:
