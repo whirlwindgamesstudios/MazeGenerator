@@ -28,26 +28,34 @@ public class MazeSpawner : MonoBehaviour
             for (int Count = 0; Count < NumberOfOutputs; ++Count)
             {
                 int RandomPoint = Random.Range(0, 4);
+                int deletedWall = Random.Range(0, sizeMaze - 1);
                 switch (RandomPoint)
                 {
                     case 0: //Выход слева
-                        Destroy(Cells[0, Random.Range(0, sizeMaze - 1)].WallLeft);
+                        
+                        if(Cells[0, deletedWall]!=null)
+                        Destroy(Cells[0, deletedWall].WallLeft);
                         break;
 
                     case 1: //Выход справа
-                        Destroy(Cells[sizeMaze - 1, Random.Range(0, sizeMaze - 1)].WallRight);
+                        
+                        if(Cells[sizeMaze - 1,deletedWall]!=null)
+                        Destroy(Cells[sizeMaze - 1,deletedWall].WallRight);
                         break;
 
                     case 2: //Выход сверху
-                        Destroy(Cells[Random.Range(0, sizeMaze - 1), sizeMaze - 1].WallTop);
+                        if(Cells[deletedWall, sizeMaze - 1]!=null)
+                        Destroy(Cells[deletedWall, sizeMaze - 1].WallTop);
                         break;
 
                     case 3: //Выход снизу
-                        Destroy(Cells[Random.Range(0, sizeMaze - 1), 0].WallBottom);
+                        if(Cells[deletedWall, 0]!=null)
+                        Destroy(Cells[deletedWall, 0].WallBottom);
                         break;
 
                     default:
-                        Destroy(Cells[0, Random.Range(0, sizeMaze - 1)].WallLeft);
+                        if(Cells[0, deletedWall]!=null)
+                        Destroy(Cells[0, deletedWall].WallLeft);
                         break;
                 }
 
